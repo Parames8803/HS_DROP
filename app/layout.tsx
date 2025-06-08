@@ -3,12 +3,7 @@ import "./globals.css"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ 
-  subsets: ["latin"],
-  display: 'swap',
-  preload: true,
-  fallback: ['system-ui', 'Arial']
-})
+const inter = Inter({ subsets: ["latin"] })
 
 // Update the metadata
 export const metadata = {
@@ -25,12 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           {children}
         </ThemeProvider>
       </body>
