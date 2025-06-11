@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { ArrowRight, Package, Truck, Palette, Search, ShoppingCart, X, Menu } from "lucide-react"
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
+import { ArrowRight, Package, Truck, Palette, Search, ShoppingCart, X, Menu, Zap } from "lucide-react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
@@ -98,19 +98,42 @@ export default function HomePage() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {["Products", "Services", "Company", "Blogs", "Startup Support"].map((item) => (
-              <motion.button
-                key={item}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`capitalize ${
-                  activeSection === item ? "text-white border-b-2 border-white" : "text-gray-400 hover:text-white"
-                }`}
-                onClick={() => scrollToSection(item)}
+            <div className="flex items-center gap-8">
+              <button
+                onClick={() => scrollToSection("home")}
+                className="text-white hover:text-gray-300 transition-colors"
               >
-                {item}
-              </motion.button>
-            ))}
+                Home
+              </button>
+              <a
+                href="https://hs-home-git-main-parameshs-projects-5e915c35.vercel.app/#products"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                Products
+              </a>
+              <a
+                href="https://hs-home-git-main-parameshs-projects-5e915c35.vercel.app/#services"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                Services
+              </a>
+              <button
+                onClick={() => scrollToSection("company")}
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                About Us
+              </button>
+              <button
+                onClick={() => scrollToSection("blogs")}
+                className="text-white hover:text-gray-300 transition-colors"
+              >
+                Meet our Team
+              </button>
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -119,6 +142,49 @@ export default function HomePage() {
           </button>
         </div>
       </header>
+
+      {/* Mobile Navigation */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="fixed top-16 left-0 right-0 z-40 bg-black border-b border-white/10 md:hidden"
+          >
+            <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+              {[
+                { name: "Home", action: () => scrollToSection("home") },
+                { 
+                  name: "Products", 
+                  action: () => window.open("https://hs-home-git-main-parameshs-projects-5e915c35.vercel.app/#products", "_blank")
+                },
+                { 
+                  name: "Services", 
+                  action: () => window.open("https://hs-home-git-main-parameshs-projects-5e915c35.vercel.app/#services", "_blank")
+                },
+                { name: "About Us", action: () => scrollToSection("company") },
+                { name: "Meet our Team", action: () => scrollToSection("blogs") },
+              ].map((item) => (
+                <button
+                  key={item.name}
+                  className={`capitalize py-2 ${
+                    activeSection === item.name
+                      ? "text-white border-l-2 pl-2 border-white"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                  onClick={() => {
+                    item.action();
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Hero Section */}
       <motion.section
@@ -287,32 +353,133 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-black border-t border-white border-opacity-10">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-6 md:mb-0">
-              {/* Update the footer brand name */}
-              <h3 className="text-2xl font-bold">Hynox</h3>
-              <p className="text-gray-400 mt-2">Delivers cutting-edge IT solutions and efficient manufacturing services. <br />
-              We connect technology and industry to drive innovation and growth.</p>
+      <footer className="py-12 bg-black border-t border-gray-800">
+        <div className="container px-4 md:px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <Zap className="h-6 w-6 text-white" />
+                <span className="ml-2 text-xl font-bold">Hynox</span>
+              </div>
+              <p className="text-gray-400">
+                Delivers cutting-edge IT solutions and efficient manufacturing services. <br />
+                We connect technology and industry to drive innovation and growth.
+              </p>
+              <div className="flex space-x-4">
+                <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <span className="sr-only">Twitter</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
+                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                  </svg>
+                </Link>
+                <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <span className="sr-only">LinkedIn</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect width="4" height="12" x="2" y="9"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                </Link>
+                <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                  <span className="sr-only">Instagram</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5"
+                  >
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                  </svg>
+                </Link>
+              </div>
             </div>
-            <div className="flex gap-8">
-              <Link href="/" className="text-gray-400 hover:text-white transition-colors">
-                Home
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Services</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Dropshipping
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Software Development
               </Link>
-              <Link href="/pricing" className="text-gray-400 hover:text-white transition-colors">
-                Pricing
+                </li>
+                <li>
+                  <Link href="#" className="text-gray-400 hover:text-white transition-colors">
+                    Digital Marketing
               </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Company</h3>
+              <ul className="space-y-2">
+                <li>
               <Link href="#" className="text-gray-400 hover:text-white transition-colors">
-                About
+                    About Us
               </Link>
+                </li>
+                <li>
               <Link href="#" className="text-gray-400 hover:text-white transition-colors">
-                Contact
+                    Meet our Team
               </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold mb-4">Contact</h3>
+              <ul className="space-y-2">
+                <li className="text-gray-400">hello.hynox@gamil.com</li>
+                <li className="text-gray-400">+91 9500656339</li>
+                <li className="text-gray-400">123 Marketing St, tirupur</li>
+              </ul>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-white border-opacity-10 text-center text-gray-500">
-            <p>© {new Date().getFullYear()} Hynox. All rights reserved.</p>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div className="text-sm text-gray-400">
+              © 2024 The Black Crest. All rights reserved.
+              <div className="flex gap-4 mt-2">
+                <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms of Service</Link>
+                <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
