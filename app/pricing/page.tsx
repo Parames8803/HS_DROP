@@ -312,16 +312,14 @@ export default function PricingPage() {
                 Services
               </a>
               <button
-                onClick={() => scrollToSection("company")}
                 className="text-white hover:text-gray-300 transition-colors"
               >
-                About Us
+                <Link href="/about">About Us</Link>
               </button>
               <button
-                onClick={() => scrollToSection("blogs")}
                 className="text-white hover:text-gray-300 transition-colors"
               >
-                Meet our Team
+                <Link href="/team">Meet our Team</Link>
               </button>
             </div>
           </nav>
@@ -353,8 +351,8 @@ export default function PricingPage() {
                   name: "Services", 
                   action: () => window.open("https://hs-home-git-main-parameshs-projects-5e915c35.vercel.app/#services", "_blank")
                 },
-                { name: "About Us", action: () => scrollToSection("company") },
-                { name: "Meet our Team", action: () => scrollToSection("blogs") },
+                { name: "About Us", action: () => window.open("/about") },
+                { name: "Meet our Team", action: () => window.open("/team") },
               ].map((item) => (
                 <button
                   key={item.name}
